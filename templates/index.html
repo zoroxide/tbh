@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="search-section">
+    <div class="terminal-prompt">
+        <span class="prompt-symbol">root@bighole:~#</span>
+        <span class="prompt-text">INITIALIZING SEARCH PROTOCOL...</span>
+    </div>
+    
+    {% if error %}
+    <div class="error-message">
+        <span class="error-icon">[ ! ]</span> ERROR: {{ error }}
+    </div>
+    {% endif %}
+    
+    <form method="POST" action="/search" class="search-form">
+        <div class="form-group">
+            <label class="form-label">
+                <span class="label-icon">►</span> SELECT TARGET TYPE:
+            </label>
+            <select name="search_type" class="form-select" required>
+                <option value="" disabled selected>-- SELECT SEARCH TYPE --</option>
+                <option value="name">[ NAME ] - Search by Full Name</option>
+                <option value="fbid">[ FBID ] - Search by Facebook ID</option>
+                <option value="phone">[ PHONE ] - Search by Phone Number</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label">
+                <span class="label-icon">►</span> ENTER SEARCH QUERY:
+            </label>
+            <input 
+                type="text" 
+                name="search_term" 
+                class="form-input" 
+                placeholder="Type search term..."
+                autocomplete="off"
+                required
+            >
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn-submit">
+                [ EXECUTE SEARCH ] ▶
+            </button>
+        </div>
+    </form>
+    
+    <div class="info-box">
+        <div class="info-line">
+            <span class="info-icon">◆</span> Database Status: <span class="text-success">ONLINE</span>
+        </div>
+        <div class="info-line">
+            <span class="info-icon">◆</span> Total Records: <span class="text-highlight">~12GB</span>
+        </div>
+        <div class="info-line">
+            <span class="info-icon">◆</span> Search Engine: <span class="text-highlight">MULTITHREADED</span>
+        </div>
+        <div class="info-line">
+            <span class="info-icon">◆</span> Estimated Time: <span class="text-success">&lt; 10s</span>
+        </div>
+    </div>
+</div>
+
+<div class="terminal-separator">
+    ════════════════════════════════════════════════════════════════════════════════
+</div>
+
+<div class="usage-guide">
+    <div class="guide-title">[ USAGE INSTRUCTIONS ]</div>
+    <pre class="guide-content">
+    1. Select search type from dropdown menu
+    2. Enter exact search term (case-sensitive)
+    3. Click EXECUTE SEARCH to begin scanning
+    4. Results will appear in &lt; 10 seconds
+    
+    WARNING: Unauthorized access is prohibited.
+    All searches are logged and monitored.
+    </pre>
+</div>
+{% endblock %}

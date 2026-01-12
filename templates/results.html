@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="results-section">
+    <div class="terminal-prompt">
+        <span class="prompt-symbol">root@bighole:~#</span>
+        <span class="prompt-text">SEARCH COMPLETED</span>
+    </div>
+    
+    <div class="search-summary">
+        <div class="summary-line">
+            <span class="label">QUERY:</span> 
+            <span class="value">{{ search_term }}</span>
+        </div>
+        <div class="summary-line">
+            <span class="label">TYPE:</span> 
+            <span class="value">{{ search_type|upper }}</span>
+        </div>
+        <div class="summary-line">
+            <span class="label">RESULTS:</span> 
+            <span class="value {% if total_results > 0 %}text-success{% else %}text-error{% endif %}">
+                {{ total_results }} MATCH{% if total_results != 1 %}ES{% endif %} FOUND
+            </span>
+        </div>
+    </div>
+    
+    <div class="terminal-separator">
+        ════════════════════════════════════════════════════════════════════════════════
+    </div>
+    
+    {% if total_results > 0 %}
+        <div class="results-container">
+            {% for result in results %}
+            <div class="result-item">
+                <div class="result-header">
+                    <span class="result-number">[ RESULT #{{ loop.index }} ]</span>
+                    <span class="result-file">FILE: {{ result.file }}</span>
+                </div>
+                <div class="result-body">
+                    <div class="result-detail">
+                        <span class="detail-label">LINE:</span>
+                        <span class="detail-value">{{ result.line }}</span>
+                    </div>
+                    <div class="result-data">
+                        <pre>{{ result.row }}</pre>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="no-results">
+            <pre class="ascii-sad">
+    ╔═══════════════════════════════════════╗
+    ║                                       ║
+    ║      ╱╲     NO MATCH FOUND     ╱╲    ║
+    ║     ╱  ╲                      ╱  ╲   ║
+    ║    ╱    ╲    ERROR: 404      ╱    ╲  ║
+    ║   ╱  ▓▓  ╲                  ╱  ▓▓  ╲ ║
+    ║  ╱   ▓▓   ╲                ╱   ▓▓   ╲║
+    ║                                       ║
+    ║  Query returned 0 results from DB     ║
+    ║                                       ║
+    ╚═══════════════════════════════════════╝
+            </pre>
+            <p class="no-results-text">
+                The search term "{{ search_term }}" was not found in any database records.
+            </p>
+        </div>
+    {% endif %}
+    
+    <div class="terminal-separator">
+        ════════════════════════════════════════════════════════════════════════════════
+    </div>
+    
+    <div class="back-link">
+        <a href="/" class="btn-back">
+            ◄ [ RETURN TO SEARCH ]
+        </a>
+    </div>
+</div>
+{% endblock %}

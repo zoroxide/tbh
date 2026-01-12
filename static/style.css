@@ -1,0 +1,498 @@
+/* ==================== HACKER TERMINAL THEME ==================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #000000;
+    font-family: 'VT323', 'Courier Prime', monospace;
+    color: #00ff00;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-image: 
+        repeating-linear-gradient(
+            0deg,
+            rgba(0, 255, 0, 0.03) 0px,
+            rgba(0, 255, 0, 0.03) 1px,
+            transparent 1px,
+            transparent 2px
+        );
+    animation: scanlines 8s linear infinite;
+}
+
+@keyframes scanlines {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 100%; }
+}
+
+/* ==================== TERMINAL CONTAINER ==================== */
+
+.terminal-container {
+    width: 100%;
+    max-width: 1200px;
+    background: #0a0a0a;
+    border: 2px solid #00ff00;
+    box-shadow: 
+        0 0 20px rgba(0, 255, 0, 0.5),
+        inset 0 0 40px rgba(0, 255, 0, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.terminal-header {
+    background: #001100;
+    border-bottom: 2px solid #00ff00;
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.terminal-title {
+    font-size: 18px;
+    color: #00ff00;
+    text-shadow: 0 0 10px #00ff00;
+    letter-spacing: 2px;
+}
+
+.terminal-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.terminal-controls span {
+    color: #00ff00;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.terminal-controls span:hover {
+    color: #00ff00;
+    text-shadow: 0 0 10px #00ff00;
+}
+
+.terminal-body {
+    padding: 20px;
+    min-height: 500px;
+}
+
+.terminal-footer {
+    background: #001100;
+    border-top: 2px solid #00ff00;
+    padding: 10px 15px;
+    text-align: center;
+}
+
+.footer-text {
+    font-size: 14px;
+    color: #00ff00;
+    letter-spacing: 3px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+/* ==================== ASCII BANNER ==================== */
+
+.ascii-banner {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #00ff00;
+    text-shadow: 0 0 10px #00ff00;
+    font-size: 10px;
+    line-height: 1;
+}
+
+.ascii-banner pre {
+    font-family: monospace;
+}
+
+/* ==================== STATUS LINE ==================== */
+
+.status-line {
+    margin: 20px 0;
+    padding: 10px;
+    background: rgba(0, 255, 0, 0.05);
+    border-left: 3px solid #00ff00;
+}
+
+.status-text {
+    font-size: 14px;
+    color: #00ff00;
+    letter-spacing: 2px;
+}
+
+/* ==================== TERMINAL PROMPT ==================== */
+
+.terminal-prompt {
+    margin: 20px 0;
+    font-size: 18px;
+}
+
+.prompt-symbol {
+    color: #00ff00;
+    font-weight: bold;
+    text-shadow: 0 0 5px #00ff00;
+}
+
+.prompt-text {
+    color: #00cc00;
+    margin-left: 10px;
+    letter-spacing: 1px;
+}
+
+/* ==================== FORMS ==================== */
+
+.search-form {
+    margin: 30px 0;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #00ff00;
+    letter-spacing: 1px;
+}
+
+.label-icon {
+    color: #00ff00;
+    margin-right: 5px;
+}
+
+.form-select,
+.form-input {
+    width: 100%;
+    padding: 12px 15px;
+    background: #000000;
+    border: 2px solid #00ff00;
+    color: #00ff00;
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    outline: none;
+    transition: all 0.3s;
+}
+
+.form-select:focus,
+.form-input:focus {
+    border-color: #00ff00;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+    background: #001100;
+}
+
+.form-select option {
+    background: #000000;
+    color: #00ff00;
+    padding: 10px;
+}
+
+.form-input::placeholder {
+    color: #006600;
+}
+
+.form-actions {
+    margin-top: 30px;
+}
+
+.btn-submit {
+    padding: 15px 40px;
+    background: #000000;
+    border: 2px solid #00ff00;
+    color: #00ff00;
+    font-family: 'VT323', monospace;
+    font-size: 20px;
+    cursor: pointer;
+    letter-spacing: 2px;
+    transition: all 0.3s;
+    text-transform: uppercase;
+}
+
+.btn-submit:hover {
+    background: #00ff00;
+    color: #000000;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
+    transform: scale(1.05);
+}
+
+.btn-submit:active {
+    transform: scale(0.98);
+}
+
+/* ==================== INFO BOX ==================== */
+
+.info-box {
+    margin: 30px 0;
+    padding: 20px;
+    background: rgba(0, 255, 0, 0.05);
+    border: 1px solid #00ff00;
+}
+
+.info-line {
+    padding: 8px 0;
+    font-size: 16px;
+    color: #00cc00;
+}
+
+.info-icon {
+    color: #00ff00;
+    margin-right: 10px;
+}
+
+.text-success {
+    color: #00ff00;
+    text-shadow: 0 0 5px #00ff00;
+}
+
+.text-highlight {
+    color: #00ffff;
+    text-shadow: 0 0 5px #00ffff;
+}
+
+.text-error {
+    color: #ff0000;
+    text-shadow: 0 0 5px #ff0000;
+}
+
+/* ==================== SEPARATOR ==================== */
+
+.terminal-separator {
+    color: #00ff00;
+    margin: 30px 0;
+    opacity: 0.3;
+    font-size: 14px;
+}
+
+/* ==================== USAGE GUIDE ==================== */
+
+.usage-guide {
+    margin: 30px 0;
+    padding: 20px;
+    border: 1px solid #00ff00;
+    background: rgba(0, 255, 0, 0.02);
+}
+
+.guide-title {
+    color: #00ff00;
+    font-size: 18px;
+    margin-bottom: 15px;
+    letter-spacing: 2px;
+}
+
+.guide-content {
+    color: #00cc00;
+    font-size: 15px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+/* ==================== ERROR MESSAGE ==================== */
+
+.error-message {
+    padding: 15px;
+    margin: 20px 0;
+    background: rgba(255, 0, 0, 0.1);
+    border: 2px solid #ff0000;
+    color: #ff0000;
+    font-size: 16px;
+}
+
+.error-icon {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+/* ==================== RESULTS ==================== */
+
+.search-summary {
+    margin: 30px 0;
+    padding: 20px;
+    background: rgba(0, 255, 0, 0.05);
+    border: 2px solid #00ff00;
+}
+
+.summary-line {
+    padding: 8px 0;
+    font-size: 18px;
+}
+
+.summary-line .label {
+    color: #00ff00;
+    font-weight: bold;
+    margin-right: 15px;
+}
+
+.summary-line .value {
+    color: #00ffff;
+}
+
+.results-container {
+    margin: 30px 0;
+}
+
+.result-item {
+    margin-bottom: 25px;
+    border: 2px solid #00ff00;
+    background: rgba(0, 255, 0, 0.02);
+    padding: 15px;
+}
+
+.result-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #00ff00;
+}
+
+.result-number {
+    color: #00ff00;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.result-file {
+    color: #00ffff;
+    font-size: 16px;
+}
+
+.result-body {
+    margin-top: 10px;
+}
+
+.result-detail {
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.detail-label {
+    color: #00ff00;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.detail-value {
+    color: #00ffff;
+}
+
+.result-data {
+    margin-top: 15px;
+    padding: 15px;
+    background: #000000;
+    border: 1px solid #00ff00;
+}
+
+.result-data pre {
+    color: #00cc00;
+    font-size: 14px;
+    line-height: 1.6;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* ==================== NO RESULTS ==================== */
+
+.no-results {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.ascii-sad {
+    color: #ff0000;
+    font-size: 14px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 5px #ff0000;
+}
+
+.no-results-text {
+    color: #00cc00;
+    font-size: 18px;
+}
+
+/* ==================== BACK LINK ==================== */
+
+.back-link {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.btn-back {
+    display: inline-block;
+    padding: 15px 40px;
+    background: #000000;
+    border: 2px solid #00ff00;
+    color: #00ff00;
+    text-decoration: none;
+    font-size: 18px;
+    letter-spacing: 2px;
+    transition: all 0.3s;
+}
+
+.btn-back:hover {
+    background: #00ff00;
+    color: #000000;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
+}
+
+/* ==================== RESPONSIVE ==================== */
+
+@media (max-width: 768px) {
+    .ascii-banner pre {
+        font-size: 6px;
+    }
+    
+    .terminal-title {
+        font-size: 14px;
+    }
+    
+    .form-select,
+    .form-input {
+        font-size: 16px;
+    }
+    
+    .btn-submit {
+        font-size: 18px;
+        padding: 12px 30px;
+    }
+    
+    .result-header {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+/* ==================== ANIMATIONS ==================== */
+
+@keyframes blink {
+    0%, 50%, 100% { opacity: 1; }
+    25%, 75% { opacity: 0; }
+}
+
+.content {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
