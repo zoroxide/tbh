@@ -19,39 +19,13 @@
         </div>
         
         <div class="terminal-body">
-            <div class="login-banner">
-<pre>
-    ╔═══════════════════════════════════════════════════════════╗
-    ║                                                           ║
-    ║     █████╗  ██████╗ ██████╗███████╗███████╗███████╗     ║
-    ║    ██╔══██╗██╔════╝██╔════╝██╔════╝██╔════╝██╔════╝     ║
-    ║    ███████║██║     ██║     █████╗  ███████╗███████╗     ║
-    ║    ██╔══██║██║     ██║     ██╔══╝  ╚════██║╚════██║     ║
-    ║    ██║  ██║╚██████╗╚██████╗███████╗███████║███████║     ║
-    ║    ╚═╝  ╚═╝ ╚═════╝ ╚═════╝╚══════╝╚══════╝╚══════╝     ║
-    ║                                                           ║
-    ║          ██████╗  ███████╗███╗   ██╗██╗███████╗██████╗  ║
-    ║          ██╔══██╗██╔════╝████╗  ██║██║██╔════╝██╔══██╗ ║
-    ║          ██║  ██║█████╗  ██╔██╗ ██║██║█████╗  ██║  ██║ ║
-    ║          ██║  ██║██╔══╝  ██║╚██╗██║██║██╔══╝  ██║  ██║ ║
-    ║          ██████╔╝███████╗██║ ╚████║██║███████╗██████╔╝ ║
-    ║          ╚═════╝ ╚══════╝╚═╝  ╚═══╝╚═╝╚══════╝╚═════╝  ║
-    ║                                                           ║
-    ╚═══════════════════════════════════════════════════════════╝
-</pre>
-            </div>
             
             <div class="auth-status">
                 <span class="status-text">[ AUTHENTICATION REQUIRED ] [ UNAUTHORIZED ACCESS PROHIBITED ]</span>
             </div>
             
             <div class="content">
-                <div class="login-section">
-                    <div class="terminal-prompt">
-                        <span class="prompt-symbol">root@bighole:~#</span>
-                        <span class="prompt-text">ENTER ACCESS TOKEN</span>
-                    </div>
-                    
+                <div class="login-section">         
                     {% if error %}
                     <div class="error-message">
                         <span class="error-icon">[ ! ]</span> {{ error }}
@@ -80,19 +54,6 @@
                             </button>
                         </div>
                     </form>
-                    
-                    <div class="security-warning">
-                        <div class="warning-title">[ SECURITY NOTICE ]</div>
-                        <pre class="warning-content">
-    ⚠ RESTRICTED AREA ⚠
-    
-    This system is for authorized use only.
-    All access attempts are logged and monitored.
-    Unauthorized access will be prosecuted.
-    
-    Enter your access token to proceed.
-                        </pre>
-                    </div>
                 </div>
             </div>
         </div>
