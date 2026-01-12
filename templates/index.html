@@ -13,7 +13,35 @@
     </div>
     {% endif %}
     
-    <form method="POST" action="/search" class="search-form">
+    <!-- Progress Bar Container (hidden by default) -->
+    <div id="progress-container" class="progress-container" style="display: none;">
+        <div class="progress-header">
+            <span class="progress-icon">◢◣◤◥</span>
+            <span class="progress-label">SCANNING DATABASE...</span>
+        </div>
+        <div class="progress-bar-wrapper">
+            <div class="progress-bar">
+                <div id="progress-fill" class="progress-fill"></div>
+                <div class="progress-glitch"></div>
+            </div>
+        </div>
+        <div class="progress-info">
+            <span id="progress-text" class="progress-text">Initializing search threads...</span>
+            <span id="progress-percent" class="progress-percent">0%</span>
+        </div>
+        <div class="progress-stats">
+            <div class="stat-item">
+                <span class="stat-label">THREADS:</span>
+                <span class="stat-value">24 ACTIVE</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">STATUS:</span>
+                <span id="scan-status" class="stat-value">PROCESSING</span>
+            </div>
+        </div>
+    </div>
+
+    <form method="POST" action="/search" class="search-form" id="search-form">
         <div class="form-group">
             <label class="form-label">
                 <span class="label-icon">►</span> SELECT TARGET TYPE:
@@ -41,11 +69,76 @@
         </div>
         
         <div class="form-actions">
-            <button type="submit" class="btn-submit">
+            <button type="submit" class="btn-submit" id="submit-btn">
                 [ EXECUTE SEARCH ] ▶
             </button>
         </div>
     </form>
+
+    <script>
+        document.getElementById('search-form').addEventListener('submit', function(e) {
+            // Show progress bar
+            document.getElementById('progress-container').style.display = 'block';
+            document.getElementById('search-form').style.display = 'none';
+            
+            // Animate progress bar
+            let progress = 0;
+            const progressFill = document.getElementById('progress-fill');
+            const progressPercent = document.getElementById('progress-percent');
+            const progressText = document.getElementById('progress-text');
+            const scanStatus = document.getElementById('scan-status');
+            
+            const messages = [
+                'Initializing search threads...',
+                'Loading CSV database...',
+                'Scanning file chunks...',
+                'Processing records...',
+                'Matching patterns...',
+                'Aggregating results...',
+                'Finalizing search...'
+            ];
+            
+            let messageIndex = 0;
+            
+            const interval = setInterval(function() {
+                if (progress < 95) {
+                    // Faster initial progress, slower towards end
+                    if (progress < 30) {
+                        progress += Math.random() * 15 + 5;
+                    } else if (progress < 60) {
+                        progress += Math.random() * 10 + 3;
+                    } else {
+                        progress += Math.random() * 5 + 1;
+                    }
+                    
+                    if (progress > 95) progress = 95;
+                    
+                    progressFill.style.width = progress + '%';
+                    progressPercent.textContent = Math.floor(progress) + '%';
+                    
+                    // Update message based on progress
+                    if (progress > messageIndex * 15 && messageIndex < messages.length) {
+                        progressText.textContent = messages[messageIndex];
+                        messageIndex++;
+                    }
+                    
+                    // Update scan status
+                    if (progress < 30) {
+                        scanStatus.textContent = 'LOADING';
+                    } else if (progress < 70) {
+                        scanStatus.textContent = 'SCANNING';
+                    } else {
+                        scanStatus.textContent = 'FINALIZING';
+                    }
+                }
+            }, 150);
+            
+            // Clear interval when form actually submits
+            setTimeout(function() {
+                clearInterval(interval);
+            }, 30000); // Safety timeout
+        });
+    </script>
     
     <div class="info-box">
         <div class="info-line">
