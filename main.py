@@ -5,6 +5,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 import os
 import asyncio
+import time
 from concurrent.futures import ThreadPoolExecutor
 from search_engine import search_csv_files
 
@@ -46,16 +47,8 @@ async def search(
             }
         )
     
-    # Map search types to column indices
-    column_map = {
-        "fbid": 0,
-        "phone": 3,
-        "name": 1  # Assuming name is in column 1
-    }
-    
-    column_idx = column_map.get(search_type)
-    
-    if column_idx is None:
+    # Validate search type
+    if search_type not in ['fbid', 'phone', 'name']:
         return templates.TemplateResponse(
             "index.html",
             {
@@ -64,9 +57,14 @@ async def search(
             }
         )
     
-    # Execute search asynchronously to avoid blocking
+    # Execute search asynchronously and track time
+    start_time = time.time()
     loop = asyncio.get_event_loop()
-    results = await loop.run_in_executor(executor, search_csv_files, search_term, column_idx)
+    results = await loop.run_in_executor(executor, search_csv_files, search_term, search_type)
+    end_time = time.time()
+    
+    # Calculate search time in milliseconds
+    search_time_ms = int((end_time - start_time) * 1000)
     
     return templates.TemplateResponse(
         "results.html",
@@ -75,7 +73,8 @@ async def search(
             "search_term": search_term,
             "search_type": search_type,
             "results": results,
-            "total_results": len(results)
+            "total_results": len(results),
+            "search_time_ms": search_time_ms
         }
     )
 

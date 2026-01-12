@@ -1,12 +1,7 @@
-{% extends "base.html" %}
+{% extends "base_results.html" %}
 
 {% block content %}
 <div class="results-section">
-    <div class="terminal-prompt">
-        <span class="prompt-symbol">root@bighole:~#</span>
-        <span class="prompt-text">SEARCH COMPLETED</span>
-    </div>
-    
     <div class="search-summary">
         <div class="summary-line">
             <span class="label">QUERY:</span> 
@@ -22,6 +17,10 @@
                 {{ total_results }} MATCH{% if total_results != 1 %}ES{% endif %} FOUND
             </span>
         </div>
+        <div class="summary-line">
+            <span class="label">SEARCH TIME:</span> 
+            <span class="value text-highlight">{{ search_time_ms }}ms</span>
+        </div>
     </div>
     
     <div class="terminal-separator">
@@ -30,19 +29,53 @@
     
     {% if total_results > 0 %}
         <div class="results-container">
-            {% for result in results %}
+            {% for user in results %}
             <div class="result-item">
                 <div class="result-header">
-                    <span class="result-number">[ RESULT #{{ loop.index }} ]</span>
-                    <span class="result-file">FILE: {{ result.file }}</span>
+                    <span class="result-number">[ USER #{{ loop.index }} ]</span>
                 </div>
                 <div class="result-body">
-                    <div class="result-detail">
-                        <span class="detail-label">LINE:</span>
-                        <span class="detail-value">{{ result.line }}</span>
-                    </div>
-                    <div class="result-data">
-                        <pre>{{ result.row }}</pre>
+                    <div class="user-details">
+                        <div class="detail-row">
+                            <span class="detail-label">NAME:</span>
+                            <span class="detail-value">{{ user.name }}</span>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <span class="detail-label">EMAIL:</span>
+                            <span class="detail-value">{{ user.email }}</span>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <span class="detail-label">PHONE:</span>
+                            <span class="detail-value">{{ user.phone }}</span>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <span class="detail-label">SCHOOL:</span>
+                            <span class="detail-value">{{ user.school }}</span>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <span class="detail-label">LOCATION:</span>
+                            <span class="detail-value">{{ user.location }}</span>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <span class="detail-label">GENDER:</span>
+                            <span class="detail-value">{{ user.gender }}</span>
+                        </div>
+                        
+                        {% if user.profile_url != 'N/A' %}
+                        <div class="detail-row">
+                            <span class="detail-label">PROFILE:</span>
+                            <span class="detail-value">
+                                <a href="{{ user.profile_url }}" target="_blank" class="profile-link">
+                                    {{ user.profile_url }}
+                                </a>
+                            </span>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

@@ -364,44 +364,51 @@ body {
     font-weight: bold;
 }
 
-.result-file {
-    color: #00ffff;
-    font-size: 16px;
-}
-
 .result-body {
     margin-top: 10px;
 }
 
-.result-detail {
-    margin-bottom: 10px;
-    font-size: 16px;
+.user-details {
+    padding: 15px;
+    background: rgba(0, 255, 0, 0.02);
+    border: 1px solid #00ff00;
+}
+
+.detail-row {
+    padding: 10px 0;
+    display: flex;
+    border-bottom: 1px solid rgba(0, 255, 0, 0.1);
+}
+
+.detail-row:last-child {
+    border-bottom: none;
 }
 
 .detail-label {
     color: #00ff00;
     font-weight: bold;
-    margin-right: 10px;
+    min-width: 120px;
+    margin-right: 15px;
+    font-size: 16px;
 }
 
 .detail-value {
     color: #00ffff;
+    font-size: 16px;
+    word-break: break-all;
 }
 
-.result-data {
-    margin-top: 15px;
-    padding: 15px;
-    background: #000000;
-    border: 1px solid #00ff00;
+.profile-link {
+    color: #00ffff;
+    text-decoration: none;
+    border-bottom: 1px solid #00ffff;
+    transition: all 0.3s;
 }
 
-.result-data pre {
-    color: #00cc00;
-    font-size: 14px;
-    line-height: 1.6;
-    overflow-x: auto;
-    white-space: pre-wrap;
-    word-wrap: break-word;
+.profile-link:hover {
+    color: #00ff00;
+    border-bottom-color: #00ff00;
+    text-shadow: 0 0 5px #00ff00;
 }
 
 /* ==================== NO RESULTS ==================== */
