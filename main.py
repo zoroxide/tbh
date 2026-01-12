@@ -4,6 +4,8 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 import os
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
 from search_engine import search_csv_files
 
 app = FastAPI(title="The Big Hole - Search Engine")
@@ -13,6 +15,9 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Setup templates
 templates = Jinja2Templates(directory="templates")
+
+# Thread pool for running blocking operations
+executor = ThreadPoolExecutor(max_workers=1)
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -59,8 +64,9 @@ async def search(
             }
         )
     
-    # Execute search
-    results = search_csv_files(search_term, column_idx)
+    # Execute search asynchronously to avoid blocking
+    loop = asyncio.get_event_loop()
+    results = await loop.run_in_executor(executor, search_csv_files, search_term, column_idx)
     
     return templates.TemplateResponse(
         "results.html",
@@ -76,4 +82,4 @@ async def search(
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=4000, workers=1)
+    uvicorn.run(app, host="0.0.0.0", port=8000, workers=1, timeout_keep_alive=300)

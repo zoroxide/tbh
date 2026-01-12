@@ -19,31 +19,30 @@ FILES = ["eg-1.csv", "eg-2.csv", "eg-3.csv", "eg-4.csv"]
 # Increase CSV field limit
 csv.field_size_limit(sys.maxsize)
 
-# Use all available cores (16 cores = 16 threads for I/O bound operations)
-# We can even use more threads since CSV reading is I/O bound
-MAX_WORKERS = 24  # Optimal for 16-core system with I/O operations
+# Use multiple workers for parallel file processing
+MAX_WORKERS = 4  # One thread per file for simplicity and reliability
 
 # Thread-safe results storage
 results_lock = threading.Lock()
 
 
-def search_file_chunk(file_path: str, search_term: str, column_idx: int, 
-                      start_line: int, end_line: int, chunk_id: int) -> List[Dict[str, Any]]:
+def search_single_file(file_path: str, search_term: str, column_idx: int) -> List[Dict[str, Any]]:
     """
-    Search a specific chunk of a CSV file for matching records.
+    Search a single CSV file for matching records.
+    Simplified and optimized for large files (11M+ rows).
     
     Args:
         file_path: Path to CSV file
         search_term: Term to search for
         column_idx: Column index to search in
-        start_line: Starting line number (inclusive)
-        end_line: Ending line number (exclusive)
-        chunk_id: Identifier for this chunk
         
     Returns:
         List of matching records with metadata
     """
     matches = []
+    
+    if not os.path.exists(file_path):
+        return matches
     
     try:
         with open(file_path, "r", encoding="utf-8", errors="replace", newline="") as f:
@@ -52,120 +51,31 @@ def search_file_chunk(file_path: str, search_term: str, column_idx: int,
             # Skip header
             header = next(reader, None)
             
-            # Skip to start_line
-            for _ in range(start_line - 1):
-                try:
-                    next(reader)
-                except StopIteration:
-                    return matches
-            
-            # Search within chunk
-            current_line = start_line
-            for row in reader:
-                if current_line >= end_line:
-                    break
-                    
+            # Search all rows
+            for row_num, row in enumerate(reader, start=2):  # start=2 to account for header
                 try:
                     # Check if the search term matches
                     if len(row) > column_idx and row[column_idx] == search_term:
                         matches.append({
                             "file": os.path.basename(file_path),
-                            "line": current_line + 1,  # +1 to account for header
+                            "line": row_num,
                             "row": ",".join(row)
                         })
                 except (IndexError, Exception):
-                    pass
-                
-                current_line += 1
-                
-    except (FileNotFoundError, IOError):
-        pass
+                    continue
+                    
+    except (FileNotFoundError, IOError, Exception) as e:
+        print(f"Error reading file {file_path}: {e}")
     
     return matches
-
-
-def count_file_lines(file_path: str) -> int:
-    """
-    Quickly count lines in a file.
-    
-    Args:
-        file_path: Path to file
-        
-    Returns:
-        Number of lines in file
-    """
-    try:
-        with open(file_path, "rb") as f:
-            return sum(1 for _ in f)
-    except (FileNotFoundError, IOError):
-        return 0
-
-
-def search_file_parallel(file_path: str, search_term: str, column_idx: int,
-                         chunks_per_file: int = 4) -> List[Dict[str, Any]]:
-    """
-    Search a single file using multiple threads by splitting into chunks.
-    
-    Args:
-        file_path: Path to CSV file
-        search_term: Term to search for
-        column_idx: Column index to search in
-        chunks_per_file: Number of chunks to split each file into
-        
-    Returns:
-        List of all matching records from this file
-    """
-    if not os.path.exists(file_path):
-        return []
-    
-    # Count total lines
-    total_lines = count_file_lines(file_path)
-    if total_lines <= 1:  # Only header or empty
-        return []
-    
-    # Calculate chunk size (excluding header)
-    data_lines = total_lines - 1
-    chunk_size = max(1, data_lines // chunks_per_file)
-    
-    all_matches = []
-    
-    # Create chunks
-    with ThreadPoolExecutor(max_workers=chunks_per_file) as executor:
-        futures = []
-        
-        for i in range(chunks_per_file):
-            start_line = i * chunk_size + 1  # +1 for header
-            end_line = start_line + chunk_size if i < chunks_per_file - 1 else total_lines
-            
-            future = executor.submit(
-                search_file_chunk,
-                file_path,
-                search_term,
-                column_idx,
-                start_line,
-                end_line,
-                i
-            )
-            futures.append(future)
-        
-        # Collect results
-        for future in as_completed(futures):
-            try:
-                matches = future.result()
-                all_matches.extend(matches)
-            except Exception as e:
-                print(f"Error processing chunk: {e}")
-    
-    return all_matches
 
 
 def search_csv_files(search_term: str, column_idx: int) -> List[Dict[str, Any]]:
     """
     Search all CSV files in parallel for a specific term.
     
-    This function uses a two-level parallelization strategy:
-    1. Process multiple files simultaneously
-    2. Split each large file into chunks for parallel processing
+    Simple and reliable approach: one thread per file.
+    With 4 files and 4 threads, this is efficient and straightforward.
     
     Args:
         search_term: The term to search for
@@ -197,10 +107,10 @@ def search_csv_files(search_term: str, column_idx: int) -> List[Dict[str, Any]]:
     if not file_paths:
         return []
     
-    # Process all files in parallel
+    # Process all files in parallel (one thread per file)
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
         futures = {
-            executor.submit(search_file_parallel, file_path, search_term, column_idx, 4): file_path
+            executor.submit(search_single_file, file_path, search_term, column_idx): file_path
             for file_path in file_paths
         }
         
