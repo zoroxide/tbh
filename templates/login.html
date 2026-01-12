@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE BIG HOLE - Authentication</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="terminal-container">
+        <div class="terminal-header">
+            <span class="terminal-title">█ THE_BIG_HOLE.EXE</span>
+            <span class="terminal-controls">
+                <span class="btn-minimize">─</span>
+                <span class="btn-maximize">□</span>
+                <span class="btn-close">×</span>
+            </span>
+        </div>
+        
+        <div class="terminal-body">
+            <div class="login-banner">
+<pre>
+    ╔═══════════════════════════════════════════════════════════╗
+    ║                                                           ║
+    ║     █████╗  ██████╗ ██████╗███████╗███████╗███████╗     ║
+    ║    ██╔══██╗██╔════╝██╔════╝██╔════╝██╔════╝██╔════╝     ║
+    ║    ███████║██║     ██║     █████╗  ███████╗███████╗     ║
+    ║    ██╔══██║██║     ██║     ██╔══╝  ╚════██║╚════██║     ║
+    ║    ██║  ██║╚██████╗╚██████╗███████╗███████║███████║     ║
+    ║    ╚═╝  ╚═╝ ╚═════╝ ╚═════╝╚══════╝╚══════╝╚══════╝     ║
+    ║                                                           ║
+    ║          ██████╗  ███████╗███╗   ██╗██╗███████╗██████╗  ║
+    ║          ██╔══██╗██╔════╝████╗  ██║██║██╔════╝██╔══██╗ ║
+    ║          ██║  ██║█████╗  ██╔██╗ ██║██║█████╗  ██║  ██║ ║
+    ║          ██║  ██║██╔══╝  ██║╚██╗██║██║██╔══╝  ██║  ██║ ║
+    ║          ██████╔╝███████╗██║ ╚████║██║███████╗██████╔╝ ║
+    ║          ╚═════╝ ╚══════╝╚═╝  ╚═══╝╚═╝╚══════╝╚═════╝  ║
+    ║                                                           ║
+    ╚═══════════════════════════════════════════════════════════╝
+</pre>
+            </div>
+            
+            <div class="auth-status">
+                <span class="status-text">[ AUTHENTICATION REQUIRED ] [ UNAUTHORIZED ACCESS PROHIBITED ]</span>
+            </div>
+            
+            <div class="content">
+                <div class="login-section">
+                    <div class="terminal-prompt">
+                        <span class="prompt-symbol">root@bighole:~#</span>
+                        <span class="prompt-text">ENTER ACCESS TOKEN</span>
+                    </div>
+                    
+                    {% if error %}
+                    <div class="error-message">
+                        <span class="error-icon">[ ! ]</span> {{ error }}
+                    </div>
+                    {% endif %}
+                    
+                    <form method="POST" action="/login" class="login-form">
+                        <div class="form-group">
+                            <label class="form-label">
+                                <span class="label-icon">►</span> ACCESS TOKEN:
+                            </label>
+                            <input 
+                                type="password" 
+                                name="token" 
+                                class="form-input" 
+                                placeholder="Enter your access token..."
+                                autocomplete="off"
+                                autofocus
+                                required
+                            >
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn-submit">
+                                [ AUTHENTICATE ] ▶
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <div class="security-warning">
+                        <div class="warning-title">[ SECURITY NOTICE ]</div>
+                        <pre class="warning-content">
+    ⚠ RESTRICTED AREA ⚠
+    
+    This system is for authorized use only.
+    All access attempts are logged and monitored.
+    Unauthorized access will be prosecuted.
+    
+    Enter your access token to proceed.
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="terminal-footer">
+            <span class="footer-text">█▓▒░ THE_BIG_HOLE v2.0 | AUTHENTICATION SYSTEM | SECURE ░▒▓█</span>
+        </div>
+    </div>
+</body>
+</html>

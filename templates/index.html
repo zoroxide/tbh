@@ -1,7 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="search-section">    
+<div class="search-section">
+    <div class="logout-container">
+        <a href="/logout" class="btn-logout">[ LOGOUT ] ◄</a>
+    </div>
+    
     {% if error %}
     <div class="error-message">
         <span class="error-icon">[ ! ]</span> ERROR: {{ error }}
