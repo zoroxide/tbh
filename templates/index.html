@@ -1,12 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="search-section">
-    <div class="terminal-prompt">
-        <span class="prompt-symbol">root@bighole:~#</span>
-        <span class="prompt-text">INITIALIZING SEARCH PROTOCOL...</span>
-    </div>
-    
+<div class="search-section">    
     {% if error %}
     <div class="error-message">
         <span class="error-icon">[ ! ]</span> ERROR: {{ error }}
@@ -143,7 +138,7 @@
         });
     </script>
     
-    <div class="info-box">
+    <!-- <div class="info-box">
         <div class="info-line">
             <span class="info-icon">◆</span> Database Status: <span class="text-success">ONLINE</span>
         </div>
@@ -156,14 +151,14 @@
         <div class="info-line">
             <span class="info-icon">◆</span> Estimated Time: <span class="text-success">&lt; 10s</span>
         </div>
-    </div>
+    </div> -->
 </div>
 
-<div class="terminal-separator">
+<!-- <div class="terminal-separator">
     ════════════════════════════════════════════════════════════════════════════════
-</div>
+</div> -->
 
-<div class="usage-guide">
+<!-- <div class="usage-guide">
     <div class="guide-title">[ USAGE INSTRUCTIONS ]</div>
     <pre class="guide-content">
     1. Select search type from dropdown menu
@@ -174,5 +169,5 @@
     WARNING: Unauthorized access is prohibited.
     All searches are logged and monitored.
     </pre>
-</div>
+</div> -->
 {% endblock %}
