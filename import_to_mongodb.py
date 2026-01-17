@@ -141,20 +141,24 @@ def main():
     print("="*70)
     
     # Validate environment variables
-    if not MONGODB_URL or '<db_password>' in MONGODB_URL:
-        print("❌ Error: Please set MONGODB_URL in .env file with valid password")
+    if not MONGODB_URL:
+        print("❌ Error: MONGODB_URL not found in .env file")
         sys.exit(1)
     
     if not MONGODB_NAME:
-        print("❌ Error: Please set MONGODB_NAME in .env file")
+        print("❌ Error: MONGODB_NAME not found in .env file")
         sys.exit(1)
     
-    print(f"\n🔗 Connecting to MongoDB Atlas...")
+    # Clean the URL (remove any whitespace)
+    mongodb_url = MONGODB_URL.strip()
+    
+    print(f"\n🔗 Connecting to MongoDB...")
     print(f"   Database: {MONGODB_NAME}")
+    print(f"   URL: {mongodb_url[:50]}...")  # Show first 50 chars for debugging
     
     try:
-        # Connect to MongoDB
-        client = MongoClient(MONGODB_URL)
+        # Connect to MongoDB with timeout
+        client = MongoClient(mongodb_url, serverSelectionTimeoutMS=5000)
         db = client[MONGODB_NAME]
         collection = db['users']
         
@@ -190,6 +194,9 @@ def main():
         
     except Exception as e:
         print(f"\n❌ MongoDB connection error: {e}")
+        print(f"\n💡 Debug info:")
+        print(f"   URL length: {len(mongodb_url)}")
+        print(f"   URL starts with: {mongodb_url[:20]}")
         sys.exit(1)
 
 
