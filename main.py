@@ -13,8 +13,14 @@ from search_engine import search_csv_files
 
 app = FastAPI(title="The Big Hole - Search Engine")
 
-# Add session middleware
-app.add_middleware(SessionMiddleware, secret_key="lF_66K9_8bn_secret_key_for_sessions")
+# Add session middleware with a proper secret key
+app.add_middleware(
+    SessionMiddleware, 
+    secret_key="lF_66K9_8bn_secret_key_for_sessions_very_secure_and_long",
+    max_age=3600 * 24,  # 24 hours
+    same_site="lax",
+    https_only=False  # Set to True in production with HTTPS
+)
 
 # Mount static files
 app.mount("/static", StaticFiles(directory="static"), name="static")
