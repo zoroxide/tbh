@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from fastapi import FastAPI, Request, Form, Response
+from fastapi import FastAPI, Request, Form, Response, Query
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, RedirectResponse
@@ -8,6 +8,7 @@ import os
 import asyncio
 import time
 from concurrent.futures import ThreadPoolExecutor
+from typing import Optional
 from search_engine import search_csv_files
 
 app = FastAPI(title="The Big Hole - Search Engine")
@@ -27,10 +28,31 @@ executor = ThreadPoolExecutor(max_workers=1)
 # Authentication token
 VALID_TOKEN = "lF=!66K9\\8bn"
 
+# Pagination settings
+RESULTS_PER_PAGE = 10
+
 
 def check_auth(request: Request) -> bool:
     """Check if user is authenticated"""
     return request.session.get("authenticated", False)
+
+
+def paginate_results(results, page, per_page):
+    """Paginate results list"""
+    total = len(results)
+    total_pages = (total + per_page - 1) // per_page  # Ceiling division
+    start = (page - 1) * per_page
+    end = start + per_page
+    
+    return {
+        'items': results[start:end],
+        'total': total,
+        'page': page,
+        'per_page': per_page,
+        'total_pages': total_pages,
+        'has_prev': page > 1,
+        'has_next': page < total_pages
+    }
 
 
 @app.get("/login", response_class=HTMLResponse)
@@ -66,34 +88,21 @@ async def logout(request: Request):
 
 
 @app.get("/", response_class=HTMLResponse)
-async def index(request: Request):
-    """Render the main search page"""
-    if not check_auth(request):
-        return RedirectResponse(url="/login", status_code=303)
-    
-    return templates.TemplateResponse(
-        "index.html",
-        {"request": request}
-    )
-
-
-@app.post("/search", response_class=HTMLResponse)
-async def search(
+async def index(
     request: Request,
-    search_type: str = Form(...),
-    search_term: str = Form(...)
+    search_type: Optional[str] = Query(None),
+    search_term: Optional[str] = Query(None),
+    page: int = Query(1, ge=1)
 ):
-    """Handle search requests"""
+    """Render the main search page with optional search results"""
     if not check_auth(request):
         return RedirectResponse(url="/login", status_code=303)
     
-    if not search_term.strip():
+    # If no search parameters, just show the form
+    if not search_term or not search_type:
         return templates.TemplateResponse(
             "index.html",
-            {
-                "request": request,
-                "error": "Search term cannot be empty"
-            }
+            {"request": request}
         )
     
     # Validate search type
@@ -115,19 +124,53 @@ async def search(
     # Calculate search time in milliseconds
     search_time_ms = int((end_time - start_time) * 1000)
     
+    # Paginate results
+    pagination = paginate_results(results, page, RESULTS_PER_PAGE)
+    
     return templates.TemplateResponse(
-        "results.html",
+        "index.html",
         {
             "request": request,
             "search_term": search_term,
             "search_type": search_type,
-            "results": results,
-            "total_results": len(results),
-            "search_time_ms": search_time_ms
+            "results": pagination['items'],
+            "total_results": pagination['total'],
+            "search_time_ms": search_time_ms,
+            "page": pagination['page'],
+            "total_pages": pagination['total_pages'],
+            "has_prev": pagination['has_prev'],
+            "has_next": pagination['has_next']
         }
+    )
+
+
+@app.post("/", response_class=HTMLResponse)
+async def search_post(
+    request: Request,
+    search_type: str = Form(...),
+    search_term: str = Form(...)
+):
+    """Handle search form submission and redirect to GET with query params"""
+    if not check_auth(request):
+        return RedirectResponse(url="/login", status_code=303)
+    
+    if not search_term.strip():
+        return templates.TemplateResponse(
+            "index.html",
+            {
+                "request": request,
+                "error": "Search term cannot be empty"
+            }
+        )
+    
+    # Redirect to GET request with query parameters
+    return RedirectResponse(
+        url=f"/?search_type={search_type}&search_term={search_term.strip()}&page=1",
+        status_code=303
     )
 
 
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=80, workers=1, timeout_keep_alive=300)
+

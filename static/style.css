@@ -736,3 +736,108 @@ body {
     color: #000000;
     box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
 }
+/* ==================== PAGINATION STYLES ==================== */
+
+.pagination {
+    margin-top: 40px;
+    padding: 20px;
+    border-top: 2px solid #00ff00;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.pagination-info {
+    font-size: 18px;
+    color: #00ff00;
+    letter-spacing: 2px;
+    text-shadow: 0 0 5px #00ff00;
+}
+
+.page-text {
+    font-weight: bold;
+}
+
+.pagination-controls {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.btn-page {
+    display: inline-block;
+    padding: 12px 30px;
+    background: #000000;
+    border: 2px solid #00ff00;
+    color: #00ff00;
+    text-decoration: none;
+    font-size: 16px;
+    letter-spacing: 2px;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.btn-page:hover {
+    background: #00ff00;
+    color: #000000;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
+    transform: scale(1.05);
+}
+
+.btn-disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.no-results {
+    text-align: center;
+    padding: 60px 20px;
+    border: 2px solid #ff0000;
+    background: rgba(255, 0, 0, 0.05);
+}
+
+.no-results-icon {
+    font-size: 48px;
+    color: #ff0000;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px #ff0000;
+}
+
+.no-results-text {
+    font-size: 24px;
+    color: #ff0000;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+    text-shadow: 0 0 5px #ff0000;
+}
+
+.no-results-hint {
+    font-size: 14px;
+    color: #ffaa00;
+    opacity: 0.8;
+}
+
+.back-link {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.btn-back {
+    display: inline-block;
+    padding: 12px 30px;
+    background: #000000;
+    border: 2px solid #00ff00;
+    color: #00ff00;
+    text-decoration: none;
+    font-size: 16px;
+    letter-spacing: 2px;
+    transition: all 0.3s;
+}
+
+.btn-back:hover {
+    background: #00ff00;
+    color: #000000;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
+}

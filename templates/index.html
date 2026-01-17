@@ -40,7 +40,7 @@
         </div>
     </div>
 
-    <form method="POST" action="/search" class="search-form" id="search-form">
+    <form method="POST" action="/" class="search-form" id="search-form">
         <div class="form-group">
             <label class="form-label">
                 <span class="label-icon">►</span> SELECT TARGET TYPE:
@@ -73,6 +73,140 @@
             </button>
         </div>
     </form>
+    
+    {% if results is defined %}
+    <!-- Search Results Section -->
+    <div class="results-section">
+        <div class="results-header">
+            <div class="terminal-separator">
+                ════════════════════════════════════════════════════════════════════════════════
+            </div>
+            <h2 class="results-title">[ SEARCH RESULTS ]</h2>
+            <div class="results-meta">
+                <span class="meta-item">
+                    <span class="meta-icon">►</span> QUERY: <span class="text-highlight">{{ search_term }}</span>
+                </span>
+                <span class="meta-item">
+                    <span class="meta-icon">►</span> TYPE: <span class="text-highlight">{{ search_type|upper }}</span>
+                </span>
+                <span class="meta-item">
+                    <span class="meta-icon">►</span> FOUND: <span class="text-success">{{ total_results }}</span> RECORDS
+                </span>
+                <span class="meta-item">
+                    <span class="meta-icon">►</span> TIME: <span class="text-success">{{ search_time_ms }}ms</span>
+                </span>
+            </div>
+            <div class="terminal-separator">
+                ════════════════════════════════════════════════════════════════════════════════
+            </div>
+        </div>
+
+        {% if results %}
+            {% for user in results %}
+            <div class="user-card">
+                <div class="user-header">
+                    [ USER #{{ loop.index + ((page - 1) * 10) }} ]
+                </div>
+                <div class="user-details">
+                    {% if user.first_name or user.last_name %}
+                    <div class="detail-row">
+                        <span class="detail-label">NAME:</span>
+                        <span class="detail-value">{{ user.first_name }} {{ user.last_name }}</span>
+                    </div>
+                    {% endif %}
+
+                    {% if user.email %}
+                    <div class="detail-row">
+                        <span class="detail-label">EMAIL:</span>
+                        <span class="detail-value">{{ user.email }}</span>
+                    </div>
+                    {% endif %}
+
+                    {% if user.phone %}
+                    <div class="detail-row">
+                        <span class="detail-label">PHONE:</span>
+                        <span class="detail-value">{{ user.phone }}</span>
+                    </div>
+                    {% endif %}
+
+                    {% if user.school %}
+                    <div class="detail-row">
+                        <span class="detail-label">SCHOOL:</span>
+                        <span class="detail-value">{{ user.school }}</span>
+                    </div>
+                    {% endif %}
+
+                    {% if user.location %}
+                    <div class="detail-row">
+                        <span class="detail-label">LOCATION:</span>
+                        <span class="detail-value">{{ user.location }}</span>
+                    </div>
+                    {% endif %}
+
+                    {% if user.gender %}
+                    <div class="detail-row">
+                        <span class="detail-label">GENDER:</span>
+                        <span class="detail-value">{{ user.gender }}</span>
+                    </div>
+                    {% endif %}
+
+                    {% if user.profile_url %}
+                    <div class="detail-row">
+                        <span class="detail-label">PROFILE:</span>
+                        <span class="detail-value detail-link">
+                            <a href="{{ user.profile_url }}" target="_blank">{{ user.profile_url }}</a>
+                        </span>
+                    </div>
+                    {% endif %}
+
+                    {% if user.fbid %}
+                    <div class="detail-row">
+                        <span class="detail-label">FBID:</span>
+                        <span class="detail-value">{{ user.fbid }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+
+            <!-- Pagination Controls -->
+            {% if total_pages > 1 %}
+            <div class="pagination">
+                <div class="pagination-info">
+                    <span class="page-text">PAGE {{ page }} OF {{ total_pages }}</span>
+                </div>
+                <div class="pagination-controls">
+                    {% if has_prev %}
+                    <a href="/?search_type={{ search_type }}&search_term={{ search_term|urlencode }}&page={{ page - 1 }}" class="btn-page">
+                        ◄ PREVIOUS
+                    </a>
+                    {% else %}
+                    <span class="btn-page btn-disabled">◄ PREVIOUS</span>
+                    {% endif %}
+
+                    {% if has_next %}
+                    <a href="/?search_type={{ search_type }}&search_term={{ search_term|urlencode }}&page={{ page + 1 }}" class="btn-page">
+                        NEXT ►
+                    </a>
+                    {% else %}
+                    <span class="btn-page btn-disabled">NEXT ►</span>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+        {% else %}
+            <div class="no-results">
+                <div class="no-results-icon">[ ✗ ]</div>
+                <div class="no-results-text">NO RECORDS FOUND</div>
+                <div class="no-results-hint">Try a different search term or search type</div>
+            </div>
+        {% endif %}
+
+        <div class="back-link">
+            <a href="/" class="btn-back">[ NEW SEARCH ] ◄</a>
+        </div>
+    </div>
+    {% endif %}
 
     <script>
         document.getElementById('search-form').addEventListener('submit', function(e) {
